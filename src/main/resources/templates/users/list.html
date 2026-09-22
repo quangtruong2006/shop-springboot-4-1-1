@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>Quản lý Users</title></head>
+<body>
+<div layout:fragment="content">
+    <div class="toolbar">
+        <h1>Quản lý Users</h1>
+        <form method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Username, email, họ tên...">
+            <button type="submit" class="button">Tìm kiếm</button>
+        </form>
+        <a href="/users/create" class="button">+ Thêm User</a>
+    </div>
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th><th>Username</th><th>Email</th><th>Họ tên</th><th>Role</th><th>Enabled</th><th>Products</th><th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users.content}">
+            <td th:text="${u.id}"></td>
+            <td th:text="${u.username}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.fullName}"></td>
+            <td th:text="${u.roleName}"></td>
+            <td th:text="${u.enabled ? 'ACTIVE' : 'LOCKED'}"></td>
+            <td th:text="${u.productCount}"></td>
+            <td class="actions">
+                <a th:href="@{/users/edit/{id}(id=${u.id})}">Edit</a>
+                <form th:action="@{/users/delete/{id}(id=${u.id})}" method="post">
+                    <button type="submit" class="danger-link" onclick="return confirm('Xóa user này?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${users.empty}"><td colspan="8">Không có dữ liệu.</td></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

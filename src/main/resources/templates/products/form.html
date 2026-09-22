@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>Product Form</title></head>
+<body>
+<div layout:fragment="content" class="form-card">
+    <h1 th:text="${mode == 'create'} ? 'Thêm Product' : 'Cập nhật Product'"></h1>
+    <form th:action="${mode == 'create'} ? @{/products/create} : @{/products/edit/{id}(id=${productDTO.id})}"
+          th:object="${productDTO}" method="post" enctype="multipart/form-data">
+        <label>Tên sản phẩm</label>
+        <input type="text" th:field="*{name}" required>
+        <label>Mô tả</label>
+        <textarea th:field="*{description}" rows="4"></textarea>
+        <label>Giá</label>
+        <input type="number" step="0.01" th:field="*{price}" required>
+        <label>Ảnh</label>
+        <div th:if="${productDTO.imageUrl != null and productDTO.imageUrl.contains('|')}">
+            <img th:src="${productDTO.imageUrl.substring(0, productDTO.imageUrl.indexOf('|'))}" class="preview">
+        </div>
+        <input type="file" name="image" accept="image/*">
+        <div class="mt">
+            <button type="submit" class="button">Lưu</button>
+            <a href="/products" class="button secondary">Hủy</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

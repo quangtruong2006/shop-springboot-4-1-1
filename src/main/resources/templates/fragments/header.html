@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="header" class="header">
+    <a href="/" class="brand">IOTSTAR SHOP</a>
+    <nav sec:authorize="isAuthenticated()">
+        <a href="/">Dashboard</a>
+        <a href="/products">Products</a>
+        <a sec:authorize="hasRole('ADMIN')" href="/users">Users</a>
+    </nav>
+    <div class="account" sec:authorize="isAuthenticated()">
+        <span sec:authentication="name"></span>
+        <form th:action="@{/logout}" method="post" style="margin:0;">
+            <button type="submit" class="link-button">Logout</button>
+        </form>
+    </div>
+    <div sec:authorize="isAnonymous()">
+        <a href="/login">Login</a>
+    </div>
+</header>
+</body>
+</html>

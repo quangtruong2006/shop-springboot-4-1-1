@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Đăng nhập</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h1>Đăng nhập</h1>
+    <div th:if="${param.error}" class="alert error">Username/password không đúng hoặc tài khoản chưa được xác thực.</div>
+    <div th:if="${param.logout}" class="alert success">Bạn đã đăng xuất.</div>
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <form th:action="@{/login}" method="post">
+        <label>Username</label>
+        <input type="text" name="username" required>
+        <label>Password</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="button full">Đăng nhập</button>
+    </form>
+    <div class="quick-links mt">
+        <a href="/register">Tạo tài khoản</a> | <a href="/forgot-password">Quên mật khẩu?</a>
+    </div>
+</div>
+</body>
+</html>

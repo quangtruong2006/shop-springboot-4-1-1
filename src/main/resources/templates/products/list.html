@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>Quản lý Products</title></head>
+<body>
+<div layout:fragment="content">
+    <div class="toolbar">
+        <h1>Quản lý Products</h1>
+        <form method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tên sản phẩm, mô tả...">
+            <button type="submit" class="button">Tìm kiếm</button>
+        </form>
+        <a href="/products/create" class="button">+ Thêm Product</a>
+    </div>
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th><th>Ảnh</th><th>Name</th><th>Price</th><th>User</th><th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products.content}">
+            <td th:text="${p.id}"></td>
+            <td>
+                <img th:if="${p.imageUrl != null and p.imageUrl.contains('|')}"
+                     th:src="${p.imageUrl.substring(0, p.imageUrl.indexOf('|'))}" class="thumb">
+                <span th:unless="${p.imageUrl != null and p.imageUrl.contains('|')}">No image</span>
+            </td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.price}"></td>
+            <td th:text="${p.username}"></td>
+            <td class="actions">
+                <a th:href="@{/products/edit/{id}(id=${p.id})}">Edit</a>
+                <form th:action="@{/products/delete/{id}(id=${p.id})}" method="post">
+                    <button type="submit" class="danger-link" onclick="return confirm('Xóa sản phẩm này?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${products.empty}"><td colspan="6">Không có dữ liệu.</td></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

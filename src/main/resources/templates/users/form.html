@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head><title>User Form</title></head>
+<body>
+<div layout:fragment="content" class="form-card">
+    <h1 th:text="${mode == 'create'} ? 'Thêm User' : 'Cập nhật User'"></h1>
+    <form th:action="${mode == 'create'} ? @{/users/create} : @{/users/edit/{id}(id=${userDTO.id})}"
+          th:object="${userDTO}" method="post">
+        <label>Username</label>
+        <input type="text" th:field="*{username}" th:readonly="${mode == 'edit'}">
+        <label>Email</label>
+        <input type="email" th:field="*{email}">
+        <label>Họ tên</label>
+        <input type="text" th:field="*{fullName}">
+        <label>Role</label>
+        <select th:field="*{roleName}">
+            <option value="ROLE_USER">USER</option>
+            <option value="ROLE_ADMIN">ADMIN</option>
+        </select>
+        <div class="mt">
+            <label><input type="checkbox" th:field="*{enabled}"> Enabled</label>
+        </div>
+        <div class="mt">
+            <button type="submit" class="button">Lưu</button>
+            <a href="/users" class="button secondary">Hủy</a>
+        </div>
+    </form>
+    <div class="note mt" th:if="${mode == 'create'}">Mật khẩu mặc định của user do Admin tạo: <b>123456</b>.</div>
+</div>
+</body>
+</html>
